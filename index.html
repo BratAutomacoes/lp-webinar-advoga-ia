@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula gratuita: IA na advocacia além das peças | Advoga IA</title>
+<meta name="description" content="Aula gratuita para advogados: aprenda a usar IA para ler os autos, fundamentar com fonte, revisar a própria peça e atender o cliente. Muito além de gerar petição.">
+<link rel="icon" href="https://www.advogaia.com.br/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --ink: #020817;
+    --text: #0f1729;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #0aa3c2;
+    --accent-ink: #0d6f75;
+    --grad: linear-gradient(90deg, #0aa3c2, #06b6d4, #2563eb);
+    --serif: "Instrument Serif", "Playfair Display", serif;
+    --sans: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 88px 0; }
+  .center { text-align: center; }
+
+  /* Barra superior */
+  .topbar { background: var(--ink); color: #cbd5e1; font-size: 13px; text-align: center; padding: 9px 16px; position: sticky; top: 0; z-index: 10; }
+  .topbar b { color: #fff; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .topbar .hl { color: #67e8f9; }
+
+  /* Logo (mesmo padrão do site: texto, não imagem) */
+  .logo { display: inline-flex; align-items: baseline; gap: 4px; text-decoration: none; }
+  .logo .a { font-weight: 700; font-size: 22px; letter-spacing: .2em; color: var(--text); }
+  .logo .i { font-weight: 700; font-size: 28px; font-style: italic; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: 4px; }
+  header.nav { padding: 18px 0; }
+  header.nav .wrap { display: flex; justify-content: space-between; align-items: center; }
+  .pill { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--accent-ink); }
+
+  /* Tipografia */
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); letter-spacing: -0.02em; line-height: 1.05; }
+  h1 { font-size: clamp(38px, 5.4vw, 60px); }
+  h2 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 20px; }
+  h3 { font-size: 26px; margin-bottom: 8px; }
+  em { font-style: italic; color: var(--accent-ink); }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); background: #e0f7f8; border-radius: 999px; padding: 6px 12px; margin-bottom: 20px; }
+  .lead { font-size: 18px; color: #334155; }
+  .muted { color: var(--muted); }
+
+  /* CTA */
+  .cta { margin-top: 32px; display: flex; flex-direction: column; gap: 10px; max-width: 420px; }
+  .center .cta { margin-left: auto; margin-right: auto; align-items: center; }
+  .cta .micro { font-size: 13px; font-weight: 600; color: var(--accent-ink); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--ink); color: #f3f5f6; text-decoration: none; font-weight: 600; font-size: 16px; letter-spacing: -0.02em; padding: 18px 28px; border-radius: 6px; transition: transform .15s, box-shadow .15s; box-shadow: 0 10px 30px -12px rgba(2,8,23,.5); width: 100%; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px -12px rgba(10,163,194,.55); }
+  .btn:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+  .btn svg { width: 20px; height: 20px; fill: #25d366; flex: none; }
+  .cta .sub { font-size: 13px; color: var(--muted); }
+
+  /* Hero */
+  .hero { padding: 32px 0 88px; }
+  .hero .grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 56px; align-items: center; }
+  .hero h1 { margin-bottom: 22px; }
+  .date { margin-top: 18px; font-weight: 600; color: var(--ink); }
+  .date span { color: var(--accent-ink); }
+
+  /* Mockup da interface */
+  .mock { background: #f3f4f3; border: 1px solid #d9dcdf; border-radius: 10px; box-shadow: 0 30px 60px -25px rgba(2,8,23,.35); overflow: hidden; font-size: 12px; font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; } /* mesma fonte do mockup do app no site */
+  .mock .bar { display: flex; gap: 6px; align-items: center; padding: 9px 12px; border-bottom: 1px solid #e3e5e7; background: #fafafa; color: var(--muted); }
+  .mock .bar i { width: 9px; height: 9px; border-radius: 50%; background: #d4d7db; }
+  .mock .bar span { margin-left: 10px; background: #eceef0; border-radius: 4px; padding: 2px 10px; }
+  .mock .body { padding: 36px 28px 30px; text-align: center; }
+  .mock .body .logo .a { font-size: 15px; } .mock .body .logo .i { font-size: 19px; }
+  .mock .input { margin: 20px auto 0; max-width: 420px; background: #fff; border: 1px solid #e3e5e7; border-radius: 8px; padding: 12px 14px; text-align: left; color: #94a3b8; }
+  .cmds { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 420px; margin: 12px auto 0; text-align: left; }
+  .cmd { background: #fff; border: 1px solid #e3e5e7; border-radius: 8px; padding: 10px 12px; }
+  .mock .logo { font-family: var(--sans); }
+  .cmd code { font-family: "Cascadia Mono", Consolas, "SF Mono", ui-monospace, monospace; font-weight: 600; color: var(--accent-ink); font-size: 12.5px; }
+  .cmd small { display: block; color: var(--muted); font-size: 11px; line-height: 1.35; margin-top: 2px; }
+  .cmd.on { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(10,163,194,.12); }
+
+  /* Dor */
+  .pain { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .pain .wrap { max-width: 760px; }
+  .pain p + p { margin-top: 18px; }
+  .pain .punch { font-family: var(--serif); font-size: clamp(26px, 3.2vw, 34px); line-height: 1.15; color: var(--ink); }
+
+  /* Prova */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 36px; text-align: left; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .shot { aspect-ratio: 4/3; background: repeating-linear-gradient(45deg, #f1f5f9 0 12px, #e8eef4 12px 24px); display: grid; place-items: center; color: #94a3b8; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; }
+  .card p { padding: 18px 20px 22px; font-size: 15px; color: #334155; }
+
+  /* Mecanismo */
+  .mech { background: var(--ink); color: #cbd5e1; }
+  .mech h2 { color: #fff; }
+  .mech em { color: #67e8f9; }
+  .orbit { position: relative; max-width: 940px; margin: 48px auto 0; display: grid; grid-template-columns: 1fr 240px 1fr; grid-template-rows: auto auto; gap: 24px 32px; align-items: center; }
+  .core { grid-column: 2; grid-row: 1 / 3; width: 240px; height: 240px; border-radius: 50%; border: 1px solid rgba(103,232,249,.35); display: grid; place-items: center; position: relative; }
+  .core::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; border: 1px dashed rgba(103,232,249,.25); }
+  .core::after { content: ""; position: absolute; inset: -14px; border-radius: 50%; background: radial-gradient(circle, rgba(10,163,194,.22), transparent 65%); z-index: -1; }
+  .core .logo .a { color: #fff; font-size: 17px; } .core .logo .i { font-size: 22px; }
+  .step { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 22px; }
+  .step .n { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--grad); color: #fff; font-weight: 700; font-size: 13px; margin-bottom: 12px; }
+  .step h3 { color: #fff; font-size: 24px; }
+  .step h3 b { font-weight: 400; color: #67e8f9; font-style: italic; }
+  .step p { font-size: 14.5px; }
+  .s1 { grid-column: 1; grid-row: 1; } .s2 { grid-column: 3; grid-row: 1; }
+  .s3 { grid-column: 1; grid-row: 2; } .s4 { grid-column: 3; grid-row: 2; }
+  .close { margin-top: 48px; font-family: var(--serif); font-size: clamp(26px, 3.4vw, 38px); color: #fff; line-height: 1.2; }
+  .mech .cta .micro { color: #67e8f9; }
+  .mech .btn { background: #fff; color: var(--ink); }
+  .mech .cta .sub { color: #94a3b8; }
+
+  /* Mentor */
+  .mentor .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
+  .photo { aspect-ratio: 4/5; border-radius: 20px; background: linear-gradient(160deg, #e0f7f8, #e2e8f0); display: grid; place-items: center; color: #94a3b8; font-weight: 600; overflow: hidden; border: 1px solid var(--border); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .bridge { font-size: 15px; color: var(--muted); font-style: italic; margin-bottom: 18px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 16px; }
+  .stat strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; color: var(--accent-ink); margin-bottom: 6px; }
+  .stat span { font-size: 13px; color: var(--muted); line-height: 1.35; display: block; }
+
+  footer { border-top: 1px solid var(--border); padding: 36px 0; font-size: 13px; color: var(--muted); text-align: center; }
+  footer .logo { margin-bottom: 12px; }
+
+  .ph { background: #fef3c7; color: #92400e; border-radius: 4px; padding: 0 4px; } /* placeholder: remover ao preencher */
+
+  @media (max-width: 860px) {
+    section { padding: 64px 0; }
+    .hero .grid, .mentor .grid { grid-template-columns: 1fr; gap: 40px; }
+    .cards { grid-template-columns: 1fr; }
+    .orbit { grid-template-columns: 1fr; }
+    .core { grid-column: 1; grid-row: auto; margin: 0 auto; width: 180px; height: 180px; order: -1; }
+    .s1, .s2, .s3, .s4 { grid-column: 1; grid-row: auto; }
+    .cta { max-width: none; }
+    .stats { grid-template-columns: 1fr; }
+    .stat { display: flex; align-items: baseline; gap: 12px; }
+    .stat strong { font-size: 30px; margin: 0; }
+    .cmds { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== CONFIGURAÇÃO ===================== -->
+<script>
+  // Preencher antes de publicar:
+  var CONFIG = {
+    LINK_GRUPO: "[LINK_GRUPO]",                 // ex.: https://chat.whatsapp.com/xxxx
+    AULA_ISO: "2026-10-29T20:00:00-03:00",      // [DATA E HORA DA AULA] (horário de Brasília)
+  };
+</script>
+
+<div class="topbar">
+  Aula gratuita e exclusiva para <span class="hl">advogados</span> &nbsp;|&nbsp; Começa em <b data-countdown>--</b>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="https://www.advogaia.com.br/" aria-label="Advoga IA"><span class="a">ADVOGA</span><span class="i">IA</span></a>
+    <span class="pill">Aula ao vivo e gratuita</span>
+  </div>
+</header>
+
+<main>
+  <!-- 1. Hero -->
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <span class="tag">Aula gratuita para advogados</span>
+        <!-- Teste A/B:
+             A: Advogue como um escritório de dez usando IA em cada etapa do caso, não só na petição.
+             B: Se você usa IA só para gerar petição, está usando 10% do que ela faz pelo seu escritório. -->
+        <h1>Use a IA para tocar o <em>caso inteiro</em>, dos autos ao cliente, e não só para escrever peças.</h1>
+        <p class="lead">Toque no botão abaixo e entre no grupo silencioso. Lá você recebe o acesso à aula em que eu mostro, num caso real, como a IA lê os autos, encontra a jurisprudência com fonte, revisa a peça com olhos de adversário e ainda explica o processo para o seu cliente.</p>
+        <p class="date">Aula: <span data-aula-label>[dia da semana], [DD/MM] às [HH]h</span></p>
+        <div class="cta" data-cta></div>
+      </div>
+
+      <div class="mock" aria-hidden="true">
+        <div class="bar"><i></i><i></i><i></i><span>Caso: Indenização · Silva x Banco</span></div>
+        <div class="body">
+          <span class="logo"><span class="a">ADVOGA</span><span class="i">IA</span></span>
+          <div class="input">Pergunte sobre o caso ou peça uma peça… / comandos</div>
+          <div class="cmds">
+            <div class="cmd on"><code>/organizar</code><small>Lê a pasta e monta o sumário dos autos</small></div>
+            <div class="cmd"><code>/buscar-fontes</code><small>Jurisprudência conferida e linkada</small></div>
+            <div class="cmd"><code>/redigir</code><small>Peça a partir dos fatos e das teses</small></div>
+            <div class="cmd"><code>/revisar</code><small>Confere fatos e citações contra a fonte</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Dor -->
+  <section class="pain">
+    <div class="wrap">
+      <h2>A maioria dos advogados parou no <em>"escreve uma petição pra mim"</em>.</h2>
+      <p class="lead">E aí a IA vira um gerador de texto que você ainda precisa conferir linha por linha, caçar a fonte de cada julgado e torcer para nada ter sido inventado. O tempo que deveria sobrar continua indo para ler PDF, organizar documento, controlar prazo e explicar o processo para o cliente pela décima vez.</p>
+      <p class="punch">O problema não é a IA. É usar só a última etapa dela.</p>
+    </div>
+  </section>
+
+  <!-- 3. Prova -->
+  <section class="center">
+    <div class="wrap">
+      <h2>O que você vai ver <em>funcionando</em> na aula:</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="shot"><!-- trocar por <img src="print-1.png" alt="..."> -->[Print 1]</div>
+          <p>Pasta de PDFs soltos virando autos organizados com sumário do caso: partes, linha do tempo, teses e pendências.</p>
+        </div>
+        <div class="card">
+          <div class="shot">[Print 2]</div>
+          <p>Jurisprudência levantada com o julgado, a tese que sustenta e o link para o inteiro teor, incluindo os precedentes desfavoráveis.</p>
+        </div>
+        <div class="card">
+          <div class="shot">[Print 3]</div>
+          <p>Depoimento de advogado usuário relatando tempo economizado ou caso resolvido.</p>
+        </div>
+      </div>
+      <div class="cta" data-cta></div>
+    </div>
+  </section>
+
+  <!-- 4. Mecanismo -->
+  <section class="mech center">
+    <div class="wrap">
+      <h2>Na aula você vai entender como a IA trabalha em <em>cada etapa</em> do caso:</h2>
+      <div class="orbit">
+        <div class="core"><span class="logo"><span class="a">ADVOGA</span><span class="i">IA</span></span></div>
+        <div class="step s1" style="text-align:left">
+          <span class="n">1</span>
+          <h3><b>Ler:</b> os autos organizados antes de você abrir o primeiro PDF</h3>
+          <p>Aponte a pasta do caso e a IA lê tudo, organiza os documentos, monta o sumário e mostra o ponto central do litígio e o que ficou pendente nos autos.</p>
+        </div>
+        <div class="step s2" style="text-align:left">
+          <span class="n">2</span>
+          <h3><b>Fundamentar:</b> cada tese com fonte, inclusive as que pesam contra</h3>
+          <p>Pesquisa em mais de 50 milhões de julgados, com legislação e jurisprudência conferidas e linkadas. Você vê o que sustenta cada tese e o que a parte contrária vai usar.</p>
+        </div>
+        <div class="step s3" style="text-align:left">
+          <span class="n">3</span>
+          <h3><b>Revisar:</b> a peça lida com olhos de adversário</h3>
+          <p>Depois de redigir, a IA confere cada fato contra os autos e cada citação contra a fonte, e aponta onde a peça está fraca antes que o outro lado aponte.</p>
+        </div>
+        <div class="step s4" style="text-align:left">
+          <span class="n">4</span>
+          <h3><b>Atender:</b> o cliente entendendo o próprio processo</h3>
+          <p>Uma apresentação do caso sem juridiquês, com a marca do seu escritório, e as intimações dos seus processos chegando num só lugar.</p>
+        </div>
+      </div>
+      <p class="close">Ler. Fundamentar. Revisar. Atender.<br>A peça é só <em>uma parte</em> do caso.</p>
+      <div class="cta" data-cta></div>
+    </div>
+  </section>
+
+  <!-- 5. Mentor -->
+  <section class="mentor">
+    <div class="wrap grid">
+      <div class="photo"><!-- trocar por <img src="mentor.jpg" alt="[Nome]"> -->[Foto do apresentador]</div>
+      <div>
+        <span class="tag">Quem vai te ensinar</span>
+        <h2>Quem vai conduzir a aula?</h2>
+        <p class="bridge">Agora que você já viu o que a IA faz em cada etapa, conheça quem vai mostrar como aplicar isso no seu escritório.</p>
+        <p class="lead"><span class="ph">[Nome]</span> é <span class="ph">[cargo]</span> da Advoga IA, plataforma de inteligência artificial jurídica usada por <span class="ph">[nº]</span> advogados. Em <span class="ph">[X anos]</span> acompanhando escritórios de <span class="ph">[perfil]</span>, percebeu um padrão: a maioria dos advogados usa IA apenas para gerar texto, e continua gastando o dia com leitura de autos, pesquisa sem fonte e revisão manual. Foi para resolver o caso inteiro, e não só a peça, que a Advoga IA foi construída.</p>
+        <div class="stats">
+          <div class="stat"><strong>[X]</strong><span>anos de [experiência]</span></div>
+          <div class="stat"><strong>+[nº]</strong><span>advogados usando a plataforma</span></div>
+          <div class="stat"><strong>+50 mi</strong><span>de julgados no acervo</span></div>
+        </div>
+        <div class="cta" data-cta></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo"><span class="a">ADVOGA</span><span class="i">IA</span></span>
+    <p><!-- [Endereço, se houver] -->Cognifyx LTDA | CNPJ 51.350.315/0001-08</p>
+    <p>© 2026 Advoga IA. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<template id="cta-tpl">
+  <span class="micro">Sem cadastro. Só clicar e entrar.</span>
+  <a class="btn" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.7 15.6 2.2 13.8 2.2 12 2.2 6.6 6.6 2.2 12 2.2c2.6 0 5.1 1 6.9 2.9 1.8 1.8 2.9 4.3 2.9 6.9 0 5.4-4.4 9.8-9.8 9.8zm8.4-18.2C18.1 1.3 15.2.1 12 .1 5.5.1.1 5.5.1 12c0 2.1.5 4.1 1.6 5.9L0 24l6.3-1.6c1.7.9 3.7 1.4 5.7 1.4 6.5 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.1-3.5-8.3z"/></svg>
+    Quero entrar na aula gratuita
+  </a>
+  <span class="sub">O link leva para o grupo silencioso de WhatsApp onde a aula será liberada.</span>
+</template>
+
+<script>
+  (function () {
+    // CTA único repetido em todos os blocos
+    var tpl = document.getElementById("cta-tpl");
+    document.querySelectorAll("[data-cta]").forEach(function (el) {
+      el.appendChild(tpl.content.cloneNode(true));
+      el.querySelector("a").href = CONFIG.LINK_GRUPO;
+    });
+
+    // Data e contador (fuso de Brasília)
+    var alvo = new Date(CONFIG.AULA_ISO).getTime();
+    if (isNaN(alvo)) return;
+    var tz = { timeZone: "America/Sao_Paulo" };
+    var d = new Date(alvo);
+    var dia = d.toLocaleDateString("pt-BR", Object.assign({ weekday: "long" }, tz));
+    var ddmm = d.toLocaleDateString("pt-BR", Object.assign({ day: "2-digit", month: "2-digit" }, tz));
+    var hm = d.toLocaleTimeString("pt-BR", Object.assign({ hour: "2-digit", minute: "2-digit" }, tz)).split(":");
+    var hh = hm[0] + "h" + (hm[1] === "00" ? "" : hm[1]);
+    document.querySelectorAll("[data-aula-label]").forEach(function (el) {
+      el.textContent = dia + ", " + ddmm + " às " + hh;
+    });
+
+    var cd = document.querySelectorAll("[data-countdown]");
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function tick() {
+      var s = Math.max(0, Math.floor((alvo - Date.now()) / 1000));
+      var txt = s === 0 ? "agora" : Math.floor(s / 86400) + "d " + pad(Math.floor(s % 86400 / 3600)) + "h " + pad(Math.floor(s % 3600 / 60)) + "m " + pad(s % 60) + "s";
+      cd.forEach(function (el) { el.textContent = txt; });
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+</body>
+</html>
