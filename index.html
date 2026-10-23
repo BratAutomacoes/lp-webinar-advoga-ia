@@ -123,7 +123,7 @@
   /* Mentor */
   .mentor .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: center; }
   .photo { aspect-ratio: 4/5; border-radius: 20px; background: linear-gradient(160deg, #e0f7f8, #e2e8f0); display: grid; place-items: center; color: #94a3b8; font-weight: 600; overflow: hidden; border: 1px solid var(--border); }
-  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
   .bridge { font-size: 15px; color: var(--muted); font-style: italic; margin-bottom: 18px; }
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
   .stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 16px; }
@@ -133,7 +133,6 @@
   footer { border-top: 1px solid var(--border); padding: 36px 0; font-size: 13px; color: var(--muted); text-align: center; }
   footer .logo { margin-bottom: 12px; }
 
-  .ph { background: #fef3c7; color: #92400e; border-radius: 4px; padding: 0 4px; } /* placeholder: remover ao preencher */
 
   @media (max-width: 860px) {
     section { padding: 64px 0; }
@@ -269,15 +268,16 @@
   <!-- 5. Mentor -->
   <section class="mentor">
     <div class="wrap grid">
-      <div class="photo"><!-- trocar por <img src="mentor.jpg" alt="[Nome]"> -->[Foto do apresentador]</div>
+      <div class="photo"><img src="rossano.webp" alt="Rossano Dala Rosa, CEO e fundador da Advoga IA" loading="lazy"></div>
       <div>
         <span class="tag">Quem vai te ensinar</span>
         <h2>Quem vai conduzir a aula?</h2>
         <p class="bridge">Agora que você já viu o que a IA faz em cada etapa, conheça quem vai mostrar como aplicar isso no seu escritório.</p>
-        <p class="lead"><span class="ph">[Nome]</span> é <span class="ph">[cargo]</span> da Advoga IA, plataforma de inteligência artificial jurídica usada por <span class="ph">[nº]</span> advogados. Em <span class="ph">[X anos]</span> acompanhando escritórios de <span class="ph">[perfil]</span>, percebeu um padrão: a maioria dos advogados usa IA apenas para gerar texto, e continua gastando o dia com leitura de autos, pesquisa sem fonte e revisão manual. Foi para resolver o caso inteiro, e não só a peça, que a Advoga IA foi construída.</p>
+        <p class="lead"><strong>Rossano Dala Rosa</strong> é CEO e fundador da Advoga IA. Desde 2022 cria soluções jurídicas com inteligência artificial, e nesse caminho mais de 26 mil advogados já usaram as ferramentas da Advoga IA no dia a dia do escritório.</p>
+        <p class="lead" style="margin-top:14px">Acompanhando esses advogados de perto, percebeu um padrão: a maioria usa IA apenas para gerar texto, e continua gastando o dia com leitura de autos, pesquisa sem fonte e revisão manual. Foi para resolver o caso inteiro, e não só a peça, que a Advoga IA foi construída.</p>
         <div class="stats">
-          <div class="stat"><strong>[X]</strong><span>anos de [experiência]</span></div>
-          <div class="stat"><strong>+[nº]</strong><span>advogados usando a plataforma</span></div>
+          <div class="stat"><strong>Desde 2022</strong><span>criando soluções jurídicas com IA</span></div>
+          <div class="stat"><strong>+26 mil</strong><span>advogados já usaram as soluções</span></div>
           <div class="stat"><strong>+50 mi</strong><span>de julgados no acervo</span></div>
         </div>
         <div class="cta" data-cta></div>
