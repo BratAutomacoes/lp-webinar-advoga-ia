@@ -166,7 +166,7 @@
   .ins { background: linear-gradient(rgba(26,155,75,.18), rgba(26,155,75,.18)) left / 0% 100% no-repeat; }
 
   /* Animação: roda ao entrar na tela (classe .play via IntersectionObserver) */
-  .a { opacity: 0; }
+  .stage .a { opacity: 0; } /* escopo em .stage: .a também é a classe do "ADVOGA" na logo */
   .play .a { animation: up .45s ease-out var(--d, 0s) both; }
   .play .spin { animation: spin .8s linear infinite, out .2s var(--d2) forwards; }
   .play .ok { animation: in .2s var(--d2) forwards; }
@@ -183,7 +183,7 @@
   @keyframes grow-ins { to { background-size: 100% 100%; } }
   @keyframes glow { 50% { box-shadow: 0 0 0 4px rgba(229,72,77,.25); } }
   @media (prefers-reduced-motion: reduce) {
-    .a, .ok { opacity: 1; } .spin { opacity: 0; }
+    .stage .a, .ok { opacity: 1; } .spin { opacity: 0; }
     .play .a, .play .spin, .play .ok, .play .brain path, .play .node.bad.t, .play .hl, .play .ins { animation: none; }
     .brain path { stroke-dashoffset: 0; } .hl { background-size: 100% 1.5px; } .ins { background-size: 100% 100%; }
   }
