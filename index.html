@@ -93,11 +93,100 @@
   .pain .punch { font-family: var(--serif); font-size: clamp(26px, 3.2vw, 34px); line-height: 1.15; color: var(--ink); }
 
   /* Prova */
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 36px; text-align: left; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-  .shot { aspect-ratio: 4/3; background: repeating-linear-gradient(45deg, #f1f5f9 0 12px, #e8eef4 12px 24px); display: grid; place-items: center; color: #94a3b8; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border); }
-  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
-  .card p { padding: 18px 20px 22px; font-size: 15px; color: #334155; }
+  .demos { display: grid; gap: 64px; margin-top: 48px; text-align: left; }
+  .demo { display: grid; grid-template-columns: 1.75fr 1fr; gap: 44px; align-items: center; }
+  .demo:nth-child(even) { grid-template-columns: 1fr 1.75fr; }
+  .demo:nth-child(even) .stage { order: 2; }
+  .demo-txt .step-tag { display: inline-flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .demo-txt .step-tag code { font-family: "Cascadia Mono", Consolas, "SF Mono", ui-monospace, monospace; text-transform: none; letter-spacing: 0; color: var(--accent-ink); background: #e0f7f8; border-radius: 4px; padding: 2px 8px; }
+  .demo-txt h3 { font-size: clamp(28px, 2.8vw, 34px); margin-bottom: 12px; }
+  .demo-txt p { font-size: 16px; color: #334155; }
+
+  /* Telas do app recriadas em HTML (desenhadas em 760x460 e escaladas via JS) */
+  .stage { position: relative; aspect-ratio: 760 / 460; border-radius: 12px; box-shadow: 0 30px 60px -25px rgba(2,8,23,.35); }
+  .win { position: absolute; top: 0; left: 0; width: 760px; height: 460px; transform-origin: 0 0; transform: scale(var(--s, 1)); background: #f3f4f3; border: 1px solid #d9dcdf; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; font: 12px/1.5 "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1f2328; }
+  .tb { display: flex; align-items: center; gap: 14px; height: 32px; flex: none; padding: 0 10px; border-bottom: 1px solid #e3e5e7; color: #3d4248; font-size: 11.5px; white-space: nowrap; }
+  .tb .beta { background: #2b6cdf; color: #fff; font-weight: 700; font-size: 9.5px; padding: 1px 6px; border-radius: 4px; }
+  .tb .on { background: #e6e8ea; border-radius: 6px; padding: 3px 8px; }
+  .tb .on i { font-style: normal; background: #1c9fc4; color: #fff; border-radius: 3px; font-size: 9px; padding: 0 4px; margin-right: 5px; font-weight: 700; }
+  .tb .ctl { margin-left: auto; letter-spacing: 12px; color: #6b7076; }
+  .wb { flex: 1; display: grid; grid-template-columns: 30px 1fr 210px; min-height: 0; }
+  .wb.doc-view { grid-template-columns: 30px 1fr 330px; }
+  .side { border-right: 1px solid #e3e5e7; display: flex; flex-direction: column; align-items: center; gap: 14px; padding-top: 14px; }
+  .side i { width: 12px; height: 11px; border: 1.4px solid #8a9097; border-radius: 3px; }
+  .chat { padding: 14px 22px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; }
+  .chat h4 { font-weight: 600; font-size: 12.5px; }
+  .chat p, .chat li { font-size: 11.5px; line-height: 1.55; }
+  .chat ul { padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
+  .k { font-family: "Cascadia Mono", Consolas, "SF Mono", ui-monospace, monospace; background: #eef3fb; color: #2b5fb4; padding: 0 4px; border-radius: 3px; font-size: 10.5px; }
+  .ubub { align-self: flex-end; background: #e6e8ea; border-radius: 8px; padding: 4px 11px; font-size: 12.5px; }
+  .chip { align-self: flex-end; border: 1px solid #dfe2e5; border-radius: 999px; padding: 1px 10px; font-size: 11px; color: #4b5159; }
+  .status { display: flex; align-items: center; gap: 7px; color: #6b7280; font-size: 11px; }
+  .check-row { display: flex; align-items: center; gap: 8px; background: #ebecec; border: 1px solid #e0e2e4; border-radius: 7px; padding: 6px 10px; font-size: 11.5px; }
+  .check-row b { font-weight: 600; }
+  .check-row span { color: #5b6168; }
+  .st { position: relative; width: 12px; height: 12px; flex: none; }
+  .st > * { position: absolute; inset: 0; }
+  .spin { border: 1.6px solid #c5cad0; border-top-color: #0aa3c2; border-radius: 50%; }
+  .ok { color: #1a9b4b; font-weight: 700; font-size: 11px; line-height: 12px; text-align: center; font-style: normal; opacity: 0; }
+  .changed { border: 1px solid #e0e2e4; border-radius: 7px; background: #fafafa; padding: 6px 10px; display: flex; justify-content: space-between; font-size: 11px; }
+  .changed span { color: #8a9097; }
+  .plus { color: #1a9b4b; font-family: "Cascadia Mono", Consolas, monospace; font-size: 10px; }
+  .files { border-left: 1px solid #e3e5e7; background: #f7f7f6; padding: 12px 10px; font-size: 11.5px; }
+  .files .hd { font-weight: 600; margin-bottom: 8px; }
+  .filt { border: 1px solid #dfe2e5; border-radius: 6px; padding: 3px 8px; color: #9aa0a6; background: #fff; margin-bottom: 10px; font-size: 10.5px; }
+  .f { display: flex; align-items: center; gap: 6px; padding: 3px 0; white-space: nowrap; }
+  .f.in { padding-left: 14px; }
+  .f.dir::before { content: "⌄"; color: #8a9097; font-size: 10px; }
+  .f b { margin-left: auto; color: #1a9b4b; font-weight: 600; font-size: 10px; }
+  .ic { width: 8px; height: 10px; border-radius: 2px; background: #e7a4a4; flex: none; }
+  .ic.md { background: #7aa7e8; } .ic.w { background: #2b6cdf; }
+
+  /* Tela 2: cérebro da pasta */
+  .brain { flex: 1; position: relative; background: #1c1d21; color: #d6d8dc; overflow: hidden; }
+  .brain .title { position: absolute; top: 12px; left: 18px; font-size: 12px; display: flex; gap: 8px; align-items: center; }
+  .brain .title i { width: 10px; height: 10px; background: linear-gradient(135deg, #0aa3c2, #e5484d); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  .brain .lbl { position: absolute; font-size: 10px; letter-spacing: .12em; color: #8d9097; text-transform: uppercase; white-space: nowrap; }
+  .brain .lbl.big { color: #e4e6ea; font-size: 11px; font-weight: 600; }
+  .node { position: absolute; height: 26px; line-height: 24px; padding: 0 10px; background: #26272c; border: 1px solid #3a3b41; border-radius: 5px; font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .node.bad { border-color: #e5484d; color: #ff8f8f; }
+  .brain svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .brain path { fill: none; stroke: #6b6e75; stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .brain path.red { stroke: #e5484d; stroke-width: 1.5; }
+
+  /* Tela 3: documento */
+  .docpane { border-left: 1px solid #e3e5e7; background: #fff; display: flex; flex-direction: column; min-height: 0; }
+  .docpane .dtab { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-bottom: 1px solid #eceef0; background: #f7f7f6; font-size: 11px; font-style: italic; }
+  .docpane .dtab b { background: #2b6cdf; color: #fff; font-style: normal; font-size: 9px; border-radius: 3px; padding: 0 4px; }
+  .page { padding: 16px 20px; font: 9.6px/1.65 "Times New Roman", Georgia, serif; color: #111; text-align: justify; overflow: hidden; }
+  .page h5 { font-size: 10px; font-weight: 700; text-align: left; margin-bottom: 8px; }
+  .page .c { text-align: center; font-weight: 700; margin: 6px 0; }
+  .page p { text-indent: 24px; margin-bottom: 6px; }
+  .hl { background: linear-gradient(#0aa3c2, #0aa3c2) left bottom / 0% 1.5px no-repeat; }
+  .ins { background: linear-gradient(rgba(26,155,75,.18), rgba(26,155,75,.18)) left / 0% 100% no-repeat; }
+
+  /* Animação: roda ao entrar na tela (classe .play via IntersectionObserver) */
+  .a { opacity: 0; }
+  .play .a { animation: up .45s ease-out var(--d, 0s) both; }
+  .play .spin { animation: spin .8s linear infinite, out .2s var(--d2) forwards; }
+  .play .ok { animation: in .2s var(--d2) forwards; }
+  .play .brain path { animation: draw .7s ease-in-out var(--d) forwards; }
+  .play .node.bad.t { animation: up .45s ease-out var(--d) both, glow 1.6s ease-in-out 3.8s infinite; }
+  .play .hl { animation: grow .6s ease-out var(--d) forwards; }
+  .play .ins { animation: grow-ins .6s ease-out var(--d) forwards; }
+  @keyframes up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes in { to { opacity: 1; } }
+  @keyframes out { to { opacity: 0; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes grow { to { background-size: 100% 1.5px; } }
+  @keyframes grow-ins { to { background-size: 100% 100%; } }
+  @keyframes glow { 50% { box-shadow: 0 0 0 4px rgba(229,72,77,.25); } }
+  @media (prefers-reduced-motion: reduce) {
+    .a, .ok { opacity: 1; } .spin { opacity: 0; }
+    .play .a, .play .spin, .play .ok, .play .brain path, .play .node.bad.t, .play .hl, .play .ins { animation: none; }
+    .brain path { stroke-dashoffset: 0; } .hl { background-size: 100% 1.5px; } .ins { background-size: 100% 100%; }
+  }
 
   /* Mecanismo */
   .mech { background: var(--ink); color: #cbd5e1; }
@@ -137,7 +226,9 @@
   @media (max-width: 860px) {
     section { padding: 64px 0; }
     .hero .grid, .mentor .grid { grid-template-columns: 1fr; gap: 40px; }
-    .cards { grid-template-columns: 1fr; }
+    .demos { gap: 48px; }
+    .demo, .demo:nth-child(even) { grid-template-columns: 1fr; gap: 20px; }
+    .demo:nth-child(even) .stage { order: 0; }
     .orbit { grid-template-columns: 1fr; }
     .core { grid-column: 1; grid-row: auto; margin: 0 auto; width: 180px; height: 180px; order: -1; }
     .s1, .s2, .s3, .s4 { grid-column: 1; grid-row: auto; }
@@ -215,19 +306,140 @@
   <section class="center">
     <div class="wrap">
       <h2>O que você vai ver <em>funcionando</em> na aula:</h2>
-      <div class="cards">
-        <div class="card">
-          <div class="shot"><img src="img/print-autos.webp" alt="IA organizando a pasta do caso e montando o sumário dos autos" loading="lazy"></div>
-          <p>Pasta de PDFs soltos virando autos organizados com sumário do caso: partes, linha do tempo, teses e pendências.</p>
+      <div class="demos">
+
+        <!-- Tela 1: /organizar -->
+        <div class="demo">
+          <div class="stage" role="img" aria-label="A IA organiza a pasta do caso e monta o sumário dos autos">
+            <div class="win">
+              <div class="tb"><span class="beta">BETA</span><span>≡</span><span>⌂ Início</span><span>▢ Monitoramentos</span><span class="on"><i>C</i>Organização dos documentos do caso</span><span>✎ Nova conversa ✕</span><span class="ctl">–▢✕</span></div>
+              <div class="wb">
+                <div class="side"><i></i><i></i><i></i><i></i></div>
+                <div class="chat">
+                  <div class="ubub a" style="--d:.2s">/organizar</div>
+                  <div class="status a" style="--d:.6s"><span class="st"><i class="spin" style="--d2:2s"></i><i class="ok" style="--d2:2s">✓</i></span>Lendo os 3 PDFs da pasta do cliente</div>
+                  <h4 class="a" style="--d:2.2s">Pronto. Organizei a pasta e montei o sumário do caso.</h4>
+                  <p class="a" style="--d:2.5s"><b>O que fiz</b></p>
+                  <ul>
+                    <li class="a" style="--d:2.7s">Criei <span class="k">autos/</span> e <span class="k">analise/</span> e movi os três PDFs, com nomes que refletem o tipo de cada documento.</li>
+                    <li class="a" style="--d:2.9s">Li e indexei os <b>3 documentos</b> (todos com texto, nenhum escaneado).</li>
+                    <li class="a" style="--d:3.1s">Gravei o mapa do caso em <span class="k">analise/SUMARIO.md</span> (partes, documentos, linha do tempo, teses e pendências).</li>
+                  </ul>
+                  <p class="a" style="--d:3.5s"><b>Do que se trata:</b> processo penal por <b>tráfico de drogas</b> (art. 33 da Lei 11.343/2006). O réu foi preso em flagrante. O ponto central do litígio é o <b>tráfico privilegiado</b>: a defesa quer a causa de diminuição do art. 33, § 4º; o MP pede o <b>afastamento</b> do redutor.</p>
+                  <p class="a" style="--d:3.9s"><b>Nada ficou sem leitura.</b> Uma pendência: os autos não identificam o advogado da defesa (convém confirmar a constituição).</p>
+                </div>
+                <div class="files">
+                  <div class="hd">Cliente João Silva</div>
+                  <div class="filt">⌕ Filtrar arquivos</div>
+                  <div class="f dir a" style="--d:1s">analise</div>
+                  <div class="f in a" style="--d:2s"><i class="ic md"></i>SUMARIO.md<b>A</b></div>
+                  <div class="f dir a" style="--d:.9s">autos</div>
+                  <div class="f in a" style="--d:1.2s"><i class="ic"></i>01-auto-de-prisao.pdf<b>A</b></div>
+                  <div class="f in a" style="--d:1.4s"><i class="ic"></i>02-denuncia.pdf<b>A</b></div>
+                  <div class="f in a" style="--d:1.6s"><i class="ic"></i>03-interrogatorio.pdf<b>A</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-txt">
+            <span class="step-tag">Passo 1 <code>/organizar</code></span>
+            <h3>Autos organizados antes do primeiro PDF</h3>
+            <p>Pasta de PDFs soltos virando autos organizados com sumário do caso: partes, linha do tempo, teses e pendências.</p>
+          </div>
         </div>
-        <div class="card">
-          <div class="shot"><img src="img/print-fontes.webp" alt="Mapa ligando cada julgado à tese que sustenta, incluindo o precedente desfavorável" loading="lazy"></div>
-          <p>Jurisprudência levantada com o julgado, a tese que sustenta e o link para o inteiro teor, incluindo os precedentes desfavoráveis.</p>
+
+        <!-- Tela 2: /buscar-fontes (cérebro da pasta) -->
+        <div class="demo">
+          <div class="stage" role="img" aria-label="Mapa que liga cada julgado à tese que sustenta, incluindo o precedente desfavorável">
+            <div class="win">
+              <div class="tb"><span class="beta">BETA</span><span>≡</span><span>⌂ Início</span><span>▢ Monitoramentos</span><span class="on"><i>C</i>Organização dos documentos do caso</span><span>✎ Nova conversa ✕</span><span class="ctl">–▢✕</span></div>
+              <div class="brain">
+                <div class="title"><i></i>Cérebro da pasta</div>
+                <div class="lbl big" style="top:40px;left:20px">Sustentação do caso</div>
+                <div class="lbl" style="top:64px;left:20px">Fundamentação (18) · 3 descartada(s)</div>
+                <div class="lbl" style="top:64px;left:300px">Teses (3)</div>
+                <div class="lbl" style="top:64px;left:566px">Documentos (3)</div>
+                <svg viewBox="0 0 760 428" preserveAspectRatio="none" aria-hidden="true">
+                  <path pathLength="1" style="--d:2s" d="M240,101 C270,101 270,101 300,101"/>
+                  <path pathLength="1" style="--d:2.1s" d="M240,137 C270,137 270,101 300,101"/>
+                  <path pathLength="1" style="--d:2.2s" d="M240,173 C270,173 270,173 300,173"/>
+                  <path pathLength="1" style="--d:2.3s" d="M240,209 C270,209 270,101 300,101"/>
+                  <path pathLength="1" style="--d:2.4s" d="M240,245 C270,245 270,173 300,173"/>
+                  <path pathLength="1" style="--d:2.5s" d="M240,281 C270,281 270,101 300,101"/>
+                  <path pathLength="1" style="--d:2.6s" d="M240,317 C270,317 270,101 300,101"/>
+                  <path pathLength="1" style="--d:3s" class="red" d="M240,353 C270,353 270,137 300,137"/>
+                  <path pathLength="1" style="--d:2.8s" d="M510,101 C538,101 538,101 566,101"/>
+                  <path pathLength="1" style="--d:2.9s" d="M510,101 C538,101 538,173 566,173"/>
+                  <path pathLength="1" style="--d:3.4s" class="red" d="M510,137 C538,137 538,137 566,137"/>
+                  <path pathLength="1" style="--d:3s" d="M510,173 C538,173 538,101 566,101"/>
+                </svg>
+                <div class="node a" style="--d:.2s;top:88px;left:20px;width:220px">TJPR — 0046969-73.2024.8.16.0014</div>
+                <div class="node a" style="--d:.35s;top:124px;left:20px;width:220px">TJPR — 0000181-36.2019.8.16.0059</div>
+                <div class="node a" style="--d:.5s;top:160px;left:20px;width:220px">TJPR — 0007945-43.2023.8.16.0056</div>
+                <div class="node a" style="--d:.65s;top:196px;left:20px;width:220px">TJPR — 0001491-15.2023.8.16.0196</div>
+                <div class="node a" style="--d:.8s;top:232px;left:20px;width:220px">TJPR — 0071150-12.2022.8.16.0014</div>
+                <div class="node a" style="--d:.95s;top:268px;left:20px;width:220px">TJPR — 0041406-98.2024.8.16.0014</div>
+                <div class="node a" style="--d:1.1s;top:304px;left:20px;width:220px">STF — RHC 219969</div>
+                <div class="node a" style="--d:1.25s;top:340px;left:20px;width:220px">TJPR — 0013490-16.2020 (desfavorável)</div>
+                <div class="node a" style="--d:1.4s;top:88px;left:300px;width:210px">Reconhecimento do tráfico privilegiado</div>
+                <div class="node bad t a" style="--d:1.5s;top:124px;left:300px;width:210px">Afastamento do redutor pela quantidade</div>
+                <div class="node a" style="--d:1.6s;top:160px;left:300px;width:210px">Não hediondez do tráfico privilegiado</div>
+                <div class="node a" style="--d:1.7s;top:88px;left:566px;width:172px">01-auto-de-prisao.pdf</div>
+                <div class="node a" style="--d:1.8s;top:124px;left:566px;width:172px">02-denuncia.pdf</div>
+                <div class="node a" style="--d:1.9s;top:160px;left:566px;width:172px">03-interrogatorio.pdf</div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-txt">
+            <span class="step-tag">Passo 2 <code>/buscar-fontes</code></span>
+            <h3>Cada tese com fonte, até as que pesam contra</h3>
+            <p>Jurisprudência levantada com o julgado, a tese que sustenta e o link para o inteiro teor, incluindo os precedentes desfavoráveis.</p>
+          </div>
         </div>
-        <div class="card">
-          <div class="shot"><img src="img/print-revisao.webp" alt="Comando /revisar conferindo fatos e citações da peça" loading="lazy"></div>
-          <p>A peça revisada com olhos de adversário: cada fato conferido contra os autos e cada citação contra a fonte.</p>
+
+        <!-- Tela 3: /revisar -->
+        <div class="demo">
+          <div class="stage" role="img" aria-label="Comando /revisar conferindo os fatos contra os autos e as citações contra a fonte">
+            <div class="win">
+              <div class="tb"><span class="beta">BETA</span><span>≡</span><span>⌂ Início</span><span>▢ Monitoramentos</span><span class="on"><i>C</i>Organização dos documentos do caso</span><span>✎ Nova conversa ✕</span><span class="ctl">–▢✕</span></div>
+              <div class="wb doc-view">
+                <div class="side"><i></i><i></i><i></i><i></i></div>
+                <div class="chat">
+                  <div class="ubub a" style="--d:.2s">/revisar</div>
+                  <div class="chip a" style="--d:.5s">ⓘ Habilidade revisar</div>
+                  <div class="check-row a" style="--d:.8s"><span class="st"><i class="spin" style="--d2:1.9s"></i><i class="ok" style="--d2:1.9s">✓</i></span><b>Conferiu</b><span>cada afirmação de fato contra autos/</span></div>
+                  <div class="check-row a" style="--d:1.1s"><span class="st"><i class="spin" style="--d2:2.5s"></i><i class="ok" style="--d2:2.5s">✓</i></span><b>Conferiu</b><span>cada citação contra fundamentacao/</span></div>
+                  <p class="a" style="--d:2.8s">Li a peça como o Ministério Público leria. Os fatos conferem com os autos e as citações conferem com a fonte. Fiz dois ajustes:</p>
+                  <ul>
+                    <li class="a" style="--d:3.1s">antecipei o argumento da variedade das drogas, que o MP vai explorar, com o próprio precedente do TJPR;</li>
+                    <li class="a" style="--d:3.3s">o pedido de substituição da pena estava sem fonte: incluí o art. 44 do CP, que já está em <span class="k">LEGISLACAO.md</span>.</li>
+                  </ul>
+                  <p class="a" style="--d:3.7s"><b>Arquivos alterados: 1</b> <span class="plus">+3 −1</span></p>
+                  <div class="changed a" style="--d:3.8s">pecas/ALEGACOES-FINAIS.docx <span>Abrir ›</span></div>
+                </div>
+                <div class="docpane a" style="--d:.3s">
+                  <div class="dtab"><b>W</b>ALEGACOES-FINAIS.docx</div>
+                  <div class="page">
+                    <h5>EXCELENTÍSSIMO SENHOR DOUTOR JUIZ DE DIREITO DA VARA CRIMINAL DA COMARCA DE EXEMPLÓPOLIS/PR</h5>
+                    <p><b>JOÃO DA SILVA EXEMPLO</b>, já qualificado nos autos, vem, por seu advogado, apresentar <b>ALEGAÇÕES FINAIS POR MEMORIAIS</b>, pelas razões a seguir.</p>
+                    <div class="c">I. DO TRÁFICO PRIVILEGIADO</div>
+                    <p>O réu é primário, tem trabalho formal e residência fixa, como consta do auto de prisão em flagrante.</p>
+                    <p>Nesse sentido, o TJPR manteve a causa de diminuição na fração máxima ao considerar preenchidos os requisitos de <span class="hl" style="--d:2s">primariedade, bons antecedentes e ausência de dedicação habitual</span> (TJPR, 0046969-73.2024.8.16.0014).</p>
+                    <p><span class="ins" style="--d:3.2s">A variedade das substâncias, por si só, não demonstra dedicação a atividades criminosas, como decidiu o mesmo precedente.</span></p>
+                    <div class="c">II. DOS PEDIDOS</div>
+                    <p>Requer o reconhecimento do tráfico privilegiado na fração de 2/3 e a substituição da pena <span class="ins" style="--d:3.5s">nos termos do art. 44 do Código Penal</span>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-txt">
+            <span class="step-tag">Passo 3 <code>/revisar</code></span>
+            <h3>A peça lida com olhos de adversário</h3>
+            <p>Cada fato conferido contra os autos e cada citação contra a fonte, antes que o outro lado aponte.</p>
+          </div>
         </div>
+
       </div>
       <div class="cta" data-cta></div>
     </div>
@@ -310,6 +522,16 @@
     document.querySelectorAll("[data-cta]").forEach(function (el) {
       el.appendChild(tpl.content.cloneNode(true));
       el.querySelector("a").href = CONFIG.LINK_GRUPO;
+    });
+
+    // Telas do app: escala a janela 760x460 para a largura do bloco e anima ao entrar na tela
+    document.querySelectorAll(".stage").forEach(function (stage) {
+      new ResizeObserver(function () {
+        stage.style.setProperty("--s", stage.clientWidth / 760);
+      }).observe(stage);
+      new IntersectionObserver(function (e) {
+        stage.classList.toggle("play", e[0].isIntersecting);
+      }, { threshold: 0.35 }).observe(stage);
     });
 
     // Data e contador (fuso de Brasília)
