@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WH7BM53Z');</script>
+<!-- End Google Tag Manager -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Aula gratuita: IA na advocacia além das peças | Advoga IA</title>
@@ -241,13 +248,17 @@
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WH7BM53Z"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- ===================== CONFIGURAÇÃO ===================== -->
 <script>
-  // Preencher antes de publicar:
   var CONFIG = {
-    LINK_GRUPO: "[LINK_GRUPO]",                 // ex.: https://chat.whatsapp.com/xxxx
-    AULA_ISO: "2026-10-29T20:00:00-03:00",      // [DATA E HORA DA AULA] (horário de Brasília)
+    LINK_GRUPO: "https://chat.whatsapp.com/HMS9kE9A8tO8ZmF59TRVvo?mode=gi_t",
+    AULA_DIA: 4,    // dia da semana da aula: 0=domingo, 1=segunda ... 4=quinta ... 6=sábado
+    AULA_HORA: 20,  // hora da aula no horário de Brasília (0-23)
   };
 </script>
 
@@ -534,24 +545,38 @@
       }, { threshold: 0.35 }).observe(stage);
     });
 
-    // Data e contador (fuso de Brasília)
-    var alvo = new Date(CONFIG.AULA_ISO).getTime();
-    if (isNaN(alvo)) return;
-    var tz = { timeZone: "America/Sao_Paulo" };
-    var d = new Date(alvo);
-    var dia = d.toLocaleDateString("pt-BR", Object.assign({ weekday: "long" }, tz));
-    var ddmm = d.toLocaleDateString("pt-BR", Object.assign({ day: "2-digit", month: "2-digit" }, tz));
-    var hm = d.toLocaleTimeString("pt-BR", Object.assign({ hour: "2-digit", minute: "2-digit" }, tz)).split(":");
-    var hh = hm[0] + "h" + (hm[1] === "00" ? "" : hm[1]);
-    document.querySelectorAll("[data-aula-label]").forEach(function (el) {
-      el.textContent = dia + ", " + ddmm + " às " + hh;
-    });
+    // Data e contador: próxima aula semanal (AULA_DIA às AULA_HORA, Brasília).
+    // Quando o horário da aula chega, passa sozinha para a semana seguinte.
+    var BRT = -3 * 3600e3; // Brasília sem horário de verão desde 2019
+    var NOMES = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+    function proximaAula(agora) {
+      var b = new Date(agora + BRT); // campos UTC = relógio de Brasília
+      var dias = (CONFIG.AULA_DIA - b.getUTCDay() + 7) % 7;
+      var t = Date.UTC(b.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate() + dias, CONFIG.AULA_HORA) - BRT;
+      return t <= agora ? t + 7 * 864e5 : t;
+    }
+    function pad(n) { return String(n).padStart(2, "0"); }
+    function rotulo(alvo, agora) {
+      var a = new Date(alvo + BRT), hoje = new Date(agora + BRT);
+      var dias = Math.round((Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate()) - Date.UTC(hoje.getUTCFullYear(), hoje.getUTCMonth(), hoje.getUTCDate())) / 864e5);
+      var hora = CONFIG.AULA_HORA + "h";
+      if (dias === 0) return "hoje, às " + hora;
+      if (dias === 1) return "amanhã, às " + hora;
+      return NOMES[a.getUTCDay()] + ", " + pad(a.getUTCDate()) + "/" + pad(a.getUTCMonth() + 1) + " às " + hora;
+    }
 
     var cd = document.querySelectorAll("[data-countdown]");
-    function pad(n) { return String(n).padStart(2, "0"); }
+    var labels = document.querySelectorAll("[data-aula-label]");
+    var alvo = 0;
     function tick() {
-      var s = Math.max(0, Math.floor((alvo - Date.now()) / 1000));
-      var txt = s === 0 ? "agora" : Math.floor(s / 86400) + "d " + pad(Math.floor(s % 86400 / 3600)) + "h " + pad(Math.floor(s % 3600 / 60)) + "m " + pad(s % 60) + "s";
+      var agora = Date.now();
+      if (agora >= alvo) {
+        alvo = proximaAula(agora);
+        var txtData = rotulo(alvo, agora);
+        labels.forEach(function (el) { el.textContent = txtData; });
+      }
+      var s = Math.floor((alvo - agora) / 1000);
+      var txt = Math.floor(s / 86400) + "d " + pad(Math.floor(s % 86400 / 3600)) + "h " + pad(Math.floor(s % 3600 / 60)) + "m " + pad(s % 60) + "s";
       cd.forEach(function (el) { el.textContent = txt; });
     }
     tick();
